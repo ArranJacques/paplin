@@ -1,0 +1,11 @@
+{
+  "name": "paplin",
+  "version": "1.0.0",
+  "description": "Node.js library for controlling the Maplin Robot Arm",
+  "main": "Paplin.js",
+  "author": "Pallant Digital <dev@pallant.digital>",
+  "license": "MIT",
+  "dependencies": {
+    "usb": "^1.2.0"
+  }
+}
