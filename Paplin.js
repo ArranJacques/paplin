@@ -32,6 +32,12 @@ const RobotArm = function () {
      * @type {boolean}
      */
     this.lightOn = false;
+
+    /**
+     * Flag to be able to cancel a sequence of actions
+     * @type {Boolean}
+     */
+    this.forceStop = false;
 };
 
 
@@ -91,6 +97,7 @@ RobotArm.prototype._controlTransfer = function (move) {
  */
 RobotArm.prototype._performSequence = function (sequence) {
 
+
     if (this.lightOn) {
         sequence.forEach(command => command.move[2] = 1);
     }
@@ -115,7 +122,12 @@ RobotArm.prototype._performSequence = function (sequence) {
             self._controlTransfer(sequence[i].move);
 
             setTimeout(() => {
-                makeMovement(i + 1, self);
+                if ( self.forceStop ) {
+                    self.forceStop = false;
+                }
+                else {
+                    makeMovement(i + 1, self);
+                }
             }, sequence[i].time);
         }
 
@@ -126,10 +138,11 @@ RobotArm.prototype._performSequence = function (sequence) {
 
 /**
  * Stop all movement and turn the light off.
- *
- * @returns {Promise}
  */
 RobotArm.prototype.stop = function () {
+    this.forceStop = true;
+    this.performingSequence = false;
+
     this.lightOn = false;
     this._controlTransfer([0, 0, 0]);
 };
@@ -137,8 +150,12 @@ RobotArm.prototype.stop = function () {
 
 /**
  * Stop all movement but keep the light on, if it's on.
+ * @returns {Promise}
  */
 RobotArm.prototype.stopMovement = function () {
+    this.forceStop = true;
+    this.performingSequence = false;
+
     this._controlTransfer([0, 0, this.lightOn ? 1 : 0]);
 };
 
