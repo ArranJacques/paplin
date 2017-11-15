@@ -1,6 +1,6 @@
 {
   "name": "paplin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Node.js library for controlling the Maplin Robot Arm",
   "main": "Paplin.js",
   "author": "Pallant Digital <dev@pallant.digital>",
