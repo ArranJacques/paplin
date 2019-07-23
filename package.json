@@ -1,10 +1,20 @@
 {
   "name": "paplin",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Node.js library for controlling the Maplin Robot Arm",
   "main": "Paplin.js",
   "author": "Arran Jacques <arranjacques@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArranJacques/paplin"
+  },
+  "keywords": [
+    "maplin",
+    "node",
+    "promise",
+    "robot arm"
+  ],
   "dependencies": {
     "usb": "^1.2.0"
   }
