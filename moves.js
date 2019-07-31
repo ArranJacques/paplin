@@ -1,8 +1,3 @@
-/**
- * The bits for each motor direction and the LED.
- *
- * @type {{}}
- */
 module.exports = {
     shoulder: {
         up: [64, 0, 0],
