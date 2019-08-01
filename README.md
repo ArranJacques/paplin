@@ -2,7 +2,7 @@
 
 A promise based Node JS package for controlling the Maplin Robot Arm.
 
-This package is written in es6 and has not been compiled to es5.
+If you're looking for a programme to control the arm with your keyboard then check out [Maplin Robot Arm Controller](https://github.com/ArranJacques/maplin-robot-arm-controller).
 
 ![Robot Arm](photo.jpg?raw=true)
 
@@ -14,18 +14,19 @@ This package is written in es6 and has not been compiled to es5.
 - [Controlling the Arm](#controlling-the-arm)
     - [Making Movements](#making-movements)
         - [Making Moves Concurrently](#making-moves-concurrently)
-    - [Stoping Movements](#stoping-movements)
+    - [Stopping Movements](#stopping-movements)
     - [Controlling the light](#controlling-the-light)
 - [A Full Example](#a-full-example)
+- [Running your programme](#running-your-programme)
 - [Notes About Movement Accuracy](#notes-about-movement-accuracy)
 
 ## Installation
 
-```
+```bash
 npm install --save paplin
 ```
 
-```
+```javascript
 const Paplin = require('paplin');
 
 const Arm = new Paplin();
@@ -35,7 +36,7 @@ const Arm = new Paplin();
 
 Plug the arm into a usb port and make sure it's turned on. To open a connection call the `Arm.openConnection(vendorId)` method and pass the device's vendor id.
 
-```
+```javascript
 const vendorId = 4711;
 const connected = Arm.openConnection(vendorId);
 
@@ -46,7 +47,7 @@ if (connected) {
 
 ### Closing the Connection
 
-```
+```javascript
 Arm.closeConnection();
 ```
 
@@ -59,13 +60,13 @@ Once a connection has been opened you can control the arm by calling methods on 
 
 The arm is moved by calling move methods on the `Arm` instance. Each move method accepts a time parameter that defines, in milliseconds, how long the move will me made for.
 
-```
+```javascript
 Arm.moveShoulderUp(300);
 ```
 
 Each move method returns a `Promise`. Using promises commands can be chained together to form long sequences of moves.
 
-```
+```javascript
 Arm.moveShoulderUp(300).then(Arm => {
     Arm.moveShoulderCounterclockwise(1000).then(Arm => {
         Arm.openGrip(100).then(Arm => {
@@ -77,7 +78,7 @@ Arm.moveShoulderUp(300).then(Arm => {
 
 The following move methods are available:
 
-```
+```javascript
 // Shoulder (base)
 Arm.moveShoulderUp(time);
 Arm.moveShoulderDown(time);
@@ -101,7 +102,7 @@ Arm.closeGrip(time);
 
 As well as creating sequences of moves, multiple moves can be made simultaneously using the `Arm.concurrent()` method. The `concurrent` method accepts a callback, which is passed an instance of `ConcurrentMoveSequencer`. The moves that you want to be made concurrently are defined by calling move methods on the `ConcurrentMoveSequencer` instance.
 
-```
+```javascript
 Arm.concurrent(Concurrent => {
     Concurrent.moveShoulderClockwise(2000);
     Concurrent.moveShoulderDown(1000);
@@ -113,7 +114,7 @@ The `ConcurrentMoveSequencer` has the same move methods available as the `Arm`. 
 
 The `Arm.concurrent()` method returns a `Promise`, which can be used to chain commands together.
 
-```
+```javascript
 Arm.concurrent(Concurrent => {
     Concurrent.moveShoulderClockwise(2000);
     Concurrent.moveShoulderDown(1000);
@@ -125,7 +126,7 @@ Arm.concurrent(Concurrent => {
 });
 ```
 
-### Stoping Movements
+### Stopping Movements
 
 Movements will automatically stop after the given time has elapsed, however they can be stopped prematurely with the following methods.
 
@@ -133,7 +134,7 @@ Movements will automatically stop after the given time has elapsed, however they
 
 Stops all movements but keeps the light on, if it's on.
 
-```
+```javascript
 Arm.turnLightOn().then(Arm => {
     Arm.moveShoulderUp(1000).then(() => {
         // etc
@@ -148,7 +149,7 @@ setTimeout(() => Arm.stopMovement(), 300);
 
 Stops all movements and turns the light off.
 
-```
+```javascript
 Arm.turnLightOn().then(Arm => {
     Arm.moveShoulderUp(1000).then(() => {
         // etc
@@ -161,14 +162,14 @@ setTimeout(() => Arm.stop(), 300);
 
 ### Controlling the Light
 
-```
+```javascript
 Arm.turnLightOn();
 Arm.turnLightOff();
 ```
 
 Both of these methods return a `Promise`, which can be used to chain commands together.
 
-```
+```javascript
 Arm.turnLightOn().then(Arm => {
     Arm.moveShoulderUp(300).then(Arm => {
         // etc
@@ -178,7 +179,7 @@ Arm.turnLightOn().then(Arm => {
 
 ## A Full Example
 
-```
+```javascript
 
 const Paplin = require('paplin');
 
@@ -206,6 +207,14 @@ if (connected) {
     });
 
 }
+```
+
+## Running your programme
+
+To execute your code and move the arm run:
+
+```bash
+node path/to/file.js
 ```
 
 ## Notes About Movement Accuracy
